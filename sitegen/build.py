@@ -45,12 +45,12 @@ def colors(name):
 ADS_HEAD=(f'<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={ADS}" crossorigin="anonymous"></script>' if ADS else "<!-- AdSense: pega aqui tu script cuando te aprueben -->")
 
 def ad_unit():
-    if not ADS:
+    if not ADS or not CONFIG.get("ad_slot"):
         return '<div class="ad-placeholder">Espacio reservado para anuncio (se activa al aprobar AdSense)</div>'
     return (f'<ins class="adsbygoogle" style="display:block" data-ad-client="{ADS}" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({{}});</script>')
 
 def ad_rail():
-    if not ADS:
+    if not ADS or not CONFIG.get("ad_slot"):
         return '<div class="ad-rail-ph">Anuncio</div>'
     return (f'<ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="{ADS}" data-ad-slot="0000000000"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({{}});</script>')
 
@@ -208,6 +208,9 @@ def build():
     for fn,(t,d,b) in LEGAL.items(): write(OUT,fn,page(t,d,b,f"{DOMAIN}/{fn}"))
     write(OUT,"sitemap.xml",sitemap())
     write(OUT,"robots.txt",f"User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n")
+    if ADS:
+        pubid=ADS.replace("ca-","")
+        write(OUT,"ads.txt",f"google.com, {pubid}, DIRECT, f08c47fec0942fa0\n")
     print(f"OK -> {len(ARTICLES)} articulos, {len(CATS)} categorias")
 
 if __name__=="__main__": build()
