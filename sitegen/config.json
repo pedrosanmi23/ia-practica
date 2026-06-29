@@ -1,8 +1,46 @@
 {
   "brand": "IA Practica",
-  "tagline": "Guias claras de inteligencia artificial y productividad, sin tecnicismos.",
-  "description": "Tutoriales, comparativas y trucos de herramientas de IA para trabajar mejor y ahorrar tiempo.",
+  "tagline": "Guias, comparativas y trucos de tecnologia, IA, finanzas y mucho mas.",
+  "description": "Guias claras y comparativas sobre IA, tecnologia, gaming, finanzas, deportes, salud y estilo de vida.",
   "domain": "https://iapractica.org",
   "email": "contacto@iapractica.org",
-  "adsense_client": ""
+  "adsense_client": "",
+  "categories": [
+    {
+      "name": "Inteligencia Artificial",
+      "slug": "ia"
+    },
+    {
+      "name": "Tecnologia y Software",
+      "slug": "tecnologia"
+    },
+    {
+      "name": "Gaming",
+      "slug": "gaming"
+    },
+    {
+      "name": "Finanzas y Ahorro",
+      "slug": "finanzas"
+    },
+    {
+      "name": "Guias de Compra",
+      "slug": "guias-compra"
+    },
+    {
+      "name": "Deportes",
+      "slug": "deportes"
+    },
+    {
+      "name": "Salud y Bienestar",
+      "slug": "salud"
+    },
+    {
+      "name": "Hogar y Estilo de Vida",
+      "slug": "hogar"
+    },
+    {
+      "name": "Actualidad y Tendencias",
+      "slug": "actualidad"
+    }
+  ]
 }
