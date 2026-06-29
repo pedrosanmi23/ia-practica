@@ -87,7 +87,7 @@ def page(title, desc, body, canonical, is_article=False, main_class="wrap"):
 <meta property="og:type" content="{'article' if is_article else 'website'}">
 <meta property="og:url" content="{canonical}">
 <meta name="robots" content="index, follow">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=4">
 {ADS_HEAD}
 </head>
 <body>
