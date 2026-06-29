@@ -88,6 +88,7 @@ def page(title, desc, body, canonical, is_article=False, main_class="wrap"):
 <meta property="og:url" content="{canonical}">
 <meta name="robots" content="index, follow">
 <link rel="stylesheet" href="/style.css?v=4">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 {ADS_HEAD}
 </head>
 <body>
@@ -194,10 +195,13 @@ def sitemap():
 
 CSS_PATH=os.path.join(ROOT,"style.css")
 
+FAVICON='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="fg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f8cff"/><stop offset="1" stop-color="#7b5cff"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#fg)"/><text x="32" y="43" font-family="system-ui,Segoe UI,Arial,sans-serif" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">SR</text></svg>'
+
 def build():
     if os.path.exists(OUT): shutil.rmtree(OUT, ignore_errors=True)
     os.makedirs(OUT)
     write(OUT,"style.css",open(CSS_PATH,encoding="utf-8").read())
+    write(OUT,"favicon.svg",FAVICON)
     write(OUT,"index.html",home_html())
     for a in ARTICLES: write(OUT,f"{a['slug']}.html",article_html(a))
     for c in CATS: write(OUT,f"categoria-{c['slug']}.html",category_html(c))
