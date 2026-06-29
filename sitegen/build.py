@@ -167,6 +167,9 @@ def home_html():
     bycat={}
     for a in ARTICLES: bycat.setdefault(a["category"],[]).append(a)
     secs=f'<section class="hero"><h1>{html.escape(BRAND)}</h1><p>{html.escape(CONFIG["tagline"])}</p></section>{ad_unit()}'
+    recientes=sorted(ARTICLES,key=lambda x:x["date"],reverse=True)[:12]
+    rc="".join(card(a) for a in recientes)
+    secs+=f'<section class="catblock"><div class="cathead"><h2>Lo mas reciente</h2></div><div class="grid">{rc}</div></section>' 
     for c in CATS:
         arts=sorted(bycat.get(c["name"],[]), key=lambda x:x["date"], reverse=True)
         if not arts: continue
