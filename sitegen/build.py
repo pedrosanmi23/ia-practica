@@ -32,7 +32,7 @@ BRAND=CONFIG["brand"]
 ADS=CONFIG.get("adsense_client","")
 CATS=CONFIG.get("categories",[])
 NAME2SLUG={c["name"]:c["slug"] for c in CATS}
-CSSV="?v=5"
+CSSV="?v=6"
 
 CAT_COLORS={"ia":("#4f8cff","#7b5cff"),"tecnologia":("#00b4d8","#0077b6"),
  "gaming":("#b5179e","#7209b7"),"finanzas":("#2dc653","#138a36"),
@@ -103,7 +103,7 @@ def page(title, desc, body, canonical, is_article=False, main_class="wrap", json
 <footer class="site-footer">
   <div class="wrap">
     <p>&copy; {datetime.date.today().year} {html.escape(BRAND)}. Todos los derechos reservados.</p>
-    <p><a href="/sobre-nosotros">Sobre nosotros</a> &middot; <a href="/politica-privacidad">Privacidad</a> &middot; <a href="/aviso-legal">Aviso legal</a> &middot; <a href="/contacto">Contacto</a></p>
+    <p><a href="/sobre-nosotros">Sobre nosotros</a> &middot; <a href="/como-trabajamos">Como trabajamos</a> &middot; <a href="/politica-privacidad">Privacidad</a> &middot; <a href="/aviso-legal">Aviso legal</a> &middot; <a href="/contacto">Contacto</a></p>
   </div>
 </footer>
 </body>
@@ -125,12 +125,13 @@ def related_block(a):
     return f'<section class="related"><h2>Te puede interesar</h2><ul>{items}</ul></section>'
 
 def article_jsonld(a, canonical):
+    author_name=a.get("author") or BRAND
     return [
       {"@context":"https://schema.org","@type":"BlogPosting",
        "headline":a["title"],"description":a["description"],
        "datePublished":a["date"],"dateModified":a["date"],"inLanguage":"es-ES",
        "mainEntityOfPage":{"@type":"WebPage","@id":canonical},
-       "author":{"@type":"Organization","name":BRAND,"url":DOMAIN+"/"},
+       "author":{"@type":"Organization","name":author_name,"url":DOMAIN+"/como-trabajamos"},
        "publisher":{"@type":"Organization","name":BRAND,
                     "logo":{"@type":"ImageObject","url":DOMAIN+"/favicon.svg"}},
        "articleSection":a["category"]},
@@ -150,7 +151,8 @@ def article_html(a):
   {hero_svg(a)}
   <nav class="crumb" aria-label="Ruta"><a href="/">Inicio</a> &rsaquo; <a href="{cat_url(a['category'])}">{html.escape(a['category'])}</a></nav>
   <h1>{html.escape(a['title'])}</h1>
-  <p class="meta">Publicado el <time datetime="{a['date']}">{a['date']}</time> &middot; {html.escape(a['category'])}</p>
+  <p class="meta">Publicado el <time datetime="{a['date']}">{a['date']}</time> &middot; {html.escape(a['category'])} &middot; Por {html.escape(a.get('author') or BRAND)}</p>
+  <p class="meta meta-review">Redactado con apoyo de IA y revisado por el <a href="/como-trabajamos">equipo editorial</a> antes de publicarse.</p>
   {bh}
   {ad_unit()}
   {related_block(a)}
@@ -187,16 +189,34 @@ def category_html(c):
     return page(c["name"],f"Articulos de {c['name']} en {BRAND}: guias, comparativas y consejos practicos.",body,f"{DOMAIN}/categoria-{c['slug']}")
 
 LEGAL={
-"sobre-nosotros":("Sobre nosotros",f"Quienes somos en {BRAND}.",f"""
+"sobre-nosotros":("Sobre nosotros",f"Quienes somos en {BRAND} y que puedes esperar de nuestro contenido.",f"""
 <h1>Sobre nosotros</h1>
-<p>{BRAND} es un proyecto editorial que publica guias, comparativas y articulos practicos sobre tecnologia, inteligencia artificial, finanzas, ocio y estilo de vida.</p>
-<p>Nuestro objetivo es explicar cada tema de forma clara y directa. Si tienes dudas, escribenos desde la <a href="/contacto">pagina de contacto</a>.</p>
+<p>{BRAND} es un proyecto editorial independiente, creado y gestionado por una sola persona con apoyo de herramientas de inteligencia artificial. Publicamos guias, comparativas y articulos practicos sobre tecnologia, inteligencia artificial, finanzas personales, gaming, salud, hogar y actualidad.</p>
+<p>Somos un sitio joven y lo decimos abiertamente: preferimos publicar menos articulos y que cada uno aporte algo util, antes que inundar el sitio de contenido generico. Si quieres saber exactamente como se produce cada articulo, visita <a href="/como-trabajamos">como trabajamos</a>.</p>
+<p>Si tienes dudas, sugerencias o detectas un error en algun articulo, escribenos desde la <a href="/contacto">pagina de contacto</a>; nos ayuda a mejorar.</p>
+"""),
+"como-trabajamos":("Como trabajamos",f"Como se investiga, redacta y revisa el contenido de {BRAND}.",f"""
+<h1>Como trabajamos</h1>
+<p>Queremos ser transparentes sobre como se produce el contenido de {BRAND}, porque creemos que eso ayuda a valorar mejor lo que lees.</p>
+<h2>Proceso de creacion</h2>
+<p>Usamos herramientas de inteligencia artificial como apoyo para investigar y redactar un primer borrador de cada articulo. Ese borrador se revisa antes de publicarse: se comprueba que la informacion sea coherente, se ajusta el tono y se descartan afirmaciones que no podamos respaldar.</p>
+<h2>Que NO hacemos</h2>
+<ul>
+<li>No inventamos cifras, precios, ofertas ni fechas concretas.</li>
+<li>No copiamos texto de otros medios ni reproducimos noticias de forma literal.</li>
+<li>En temas de salud y finanzas, evitamos dar consejos personalizados: son temas donde siempre recomendamos consultar a un profesional cualificado.</li>
+</ul>
+<h2>Ritmo de publicacion</h2>
+<p>Publicamos de forma pausada y constante en lugar de en grandes tandas, precisamente para poder mantener un nivel de revision adecuado en cada articulo.</p>
+<h2>Correcciones</h2>
+<p>Si encuentras un error o una imprecision en cualquier articulo, escribenos a <strong>{CONFIG['email']}</strong> y lo revisamos lo antes posible.</p>
 """),
 "contacto":("Contacto",f"Contacta con {BRAND}.",f"""
 <h1>Contacto</h1>
+<p>{BRAND} es un proyecto pequeno gestionado por una sola persona, asi que agradecemos tu paciencia.</p>
 <p>Puedes escribirnos a:</p>
 <p><strong>{CONFIG['email']}</strong></p>
-<p>Respondemos en un plazo aproximado de 48-72 horas laborables.</p>
+<p>Respondemos en un plazo aproximado de 48-72 horas laborables. Si nos escribes para senalar un error en un articulo, indicanos el titulo o el enlace para que podamos revisarlo rapido.</p>
 """),
 "politica-privacidad":("Politica de privacidad","Politica de privacidad y uso de cookies.",f"""
 <h1>Politica de privacidad</h1>
@@ -244,6 +264,9 @@ def build():
     if ADS:
         pubid=ADS.replace("ca-","")
         write(OUT,"ads.txt",f"google.com, {pubid}, DIRECT, f08c47fec0942fa0\n")
+    inkey=CONFIG.get("indexnow_key")
+    if inkey:
+        write(OUT,f"{inkey}.txt",inkey)
     print(f"OK -> {len(ARTICLES)} articulos, {len(CATS)} categorias (SEO v4)")
 
 if __name__=="__main__": build()

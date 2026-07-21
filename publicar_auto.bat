@@ -22,6 +22,10 @@ git diff --cached --quiet
 if errorlevel 1 (
   git commit -m "Articulo automatico %date%"
   git push
+  REM 4) Avisa a los motores compatibles con IndexNow (Bing, Yandex, Naver, Seznam...)
+  REM    de que el sitio se ha actualizado. Google no participa en IndexNow (usa Search Console).
+  echo {"host":"sin-rodeos.com","key":"49576089a6c51ce766770178fec48c38","keyLocation":"https://sin-rodeos.com/49576089a6c51ce766770178fec48c38.txt","urlList":["https://sin-rodeos.com/","https://sin-rodeos.com/sitemap.xml"]} > "%TEMP%\indexnow_payload.json"
+  curl -s -X POST "https://api.indexnow.org/indexnow" -H "Content-Type: application/json; charset=utf-8" --data "@%TEMP%\indexnow_payload.json" >nul 2>&1
 ) else (
   echo Sin cambios que publicar.
 )
